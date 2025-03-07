@@ -1,3 +1,4 @@
+
 " ====================================================
 " ARQUIVO DE CONFIGURAÇÃO HÍBRIDO VIM/NEOVIM
 " ====================================================
@@ -136,17 +137,22 @@ autocmd VimEnter * echo "\nConfiguração carregada com sucesso! ✅"
 "          NOTAS DE INSTALAÇÃO
 " ====================================================
 "
-" ESTRUTURA DE ARQUIVOS (Linux):
+" ESTRUTURA DE ARQUIVOS (Linux/WSL/macOS):
+"
 " Para Neovim:
-"   ~/.config/nvim/
-"   ├── init.vim          (este arquivo)
+"  ~/.config/nvim/
+"   ├── init.vim          (este VimScript)
 "   └── lua/
-"       └── config.lua    (configurações em Lua)
+"       └── config.lua    (configurações em LuaScript)
+"
 "
 " Para Vim tradicional:
-"   ~/.vimrc              (este arquivo)
+"  ~/.vimrc              (este VimScript)
+"
 "
 " APÓS INSTALAR:
-" 1. Vim: Executar :PlugInstall
-" 2. Neovim: Executar :Lazy install
+" 1. Vim(```bash: vim): Executar :PlugInstall
+" 2. Neovim(```bash: nvim): Executar :Lazy install
+"
 " ==================================================== 
+

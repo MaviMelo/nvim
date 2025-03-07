@@ -1,0 +1,61 @@
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Para carregar essas configurações para o Vim e/ou NeoVim que já estão carregados com outras configurações, antes de mover os diretório .config (configurações para o NeoVim) e/ou o arquivo .vimrc (configurações para o Vim) para o diretório home ( ~/ ) no sistema  operacional é preciso lipar as configurações antigas para não haver coflitos.
+ 
+1. Remover as configurações e dados antigos
+
+Linux/macOS (Unix)/Windows via WSL (Windows Subsystem for Linux):
+
+1.1. Para o NeoVim (```bash: nvim)
+```bash:
+
+	# Configurações principais
+	rm -rf ~/.config/nvim
+
+	# Dados, plugins e caches
+	rm -rf ~/.local/share/nvim  # Plugins e dados instalados
+	rm -rf ~/.cache/nvim        # Arquivos temporários/cache
+	rm -rf ~/.local/state/nvim  # Estado da sessão (opcional)
+
+	# Opcional: reinstale o neovim (se houver problemas com a intalação)
+	sudo apt purge neovim && sudo apt install neovim 	# no Linux (Debian/Ubuntu/WSL)
+	brew reinstall neovim 	# no macOS (via Homebrew)
+ 
+
+1.2. Para o Vim (```bash: vim)
+```bash:
+
+	# Remove a pasta de configurações e plugins
+	rm -rf ~/.vim
+	
+	# Remove os arquivos de configuração
+	rm ~/.vimrc ~/.gvimrc  # .vimrc (config principal) e .gvimrc (config GUI)
+	
+	# Opcional: Remove histórico e sessões salvas
+	rm ~/.viminfo
+	
+	# Opcional: reinstale o vim (se houver problemas com a intalação)
+	sudo apt purge vim && sudo apt install vim 	# no Linux (Debian/Ubuntu/WSL)
+	brew reinstall vim 	# no macOS (via Homebrew)
+    
+
+2. ESTRUTURA DE ARQUIVOS (Linux/WSL/macOS):
+
+2.1. Para Neovim:
+   ~/.config/nvim/
+   ├── init.vim          (este arquivo)
+   └── lua/
+       └── config.lua    (configurações em Lua)
+
+
+2.2. Para Vim tradicional:
+   ~/.vimrc              (este arquivo)
+
+
+3. APÓS INSTALAR:
+ 3.1. Vim(```bash: vim): Executar :PlugInstall
+ 3.2. Neovim(```bash: nvim): Executar :Lazy install
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
