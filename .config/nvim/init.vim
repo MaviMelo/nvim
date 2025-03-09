@@ -4,7 +4,7 @@
 " ====================================================
 
 " Verifica se está rodando no Neovim (para comportamentos específicos)
-let g:is_nvim = has('nvim') " 1 = NeoVim, 0 = Vim tradicional
+let g:is_nvim = has('nvim') " bite 1 = NeoVim, bite 0 = Vim tradicional
 
 " ====================================================
 "            CONFIGURAÇÕES BÁSICAS
@@ -77,18 +77,24 @@ if !g:is_nvim " Configuração específica para Vim tradicional
 
 endif
 
+ set runtimepath^=~/.config/nvim  
+
 " ====================================================
 "       CONFIGURAÇÃO LUA (SOMENTE PARA NEOVIM)
 " ====================================================
 if g:is_nvim
-  " Adiciona caminho para módulos Lua
-  lua package.path = package.path .. ';' .. vim.fn.expand('~/.config/nvim/lua/?.lua')
+  " Configuração do path para módulos Lua
+  
+  lua <<EOF
+  --[[Adiciona o diretório lua ao package.path]]
+    package.path = package.path .. ';' .. vim.env.HOME .. '~/.config/nvim/lua/?.lua'
+EOF
 
-  " Carrega configuração principal em Lua
-  lua require('config') " Arquivo: ~/.config/nvim/lua/config.lua
-
-  " Garante caminhos corretos para configuração do Neovim
+  " Configuração do runtimepath
   set runtimepath^=~/.config/nvim
+
+  " Carrega configuração principal
+  lua require('config')
 endif
 
 " ====================================================
@@ -98,20 +104,20 @@ let mapleader = '\' " Define a tecla líder (prefixo para atalhos)
 
 " Recarregar configuração (comportamento diferente por editor)
 if g:is_nvim
-  " Neovim: Atualiza plugins Lazy.nvim
+  " neovim: Atualiza plugins Lazy.nvim
   nnoremap <leader>rr :source $MYVIMRC <bar> Lazy sync<CR>
 else
-  " Vim: Atualiza plugins vim-plug
+  " vim: Atualiza plugins vim-plug
   nnoremap <leader>rr :source $MYVIMRC <bar> PlugInstall<CR>
 endif
 
 " Limpar destaque de buscas
 nnoremap <silent> <leader>h :nohlsearch<CR>
 
-" Navegador de arquivos (apenas no Vim com NERDTree)
-if !g:is_nvim
-  nnoremap <leader>n :NERDTreeToggle<CR>
-endif
+" Navegador de arquivos natico (Netrw)
+"if !g:is_nvim
+  nnoremap <leader>n :Lex 30<CR>
+"endif
 
 " ====================================================
 "          CONFIGURAÇÕES ADICIONAIS
@@ -124,11 +130,11 @@ filetype indent on    " Carrega regras de indentação específicas
 "          MENSAGENS INICIAIS
 " ====================================================
 autocmd VimEnter * echo "Editor configurado! Comandos úteis:\n"
-      \ . "  :nmap          - Listar atalhos\n"
-      \ . "  :e $MYVIMRC    - Editar configuração\n"
-      \ . (g:is_nvim ? 
-      \   "  :Lazy install  - Instalar plugins Lua" : 
-      \   "  :PlugInstall   - Instalar plugins Vim")
+      \  "  :nmap          - Listar atalhos\n"
+      \  "  :e $MYVIMRC    - Editar configuração\n"
+      \  (g:is_nvim ? 
+      \  "  :Lazy install  - Instalar plugins Lua" : 
+      \  "  :PlugInstall   - Instalar plugins Vim")
 
 " Confirmação de carregamento
 autocmd VimEnter * echo "\nConfiguração carregada com sucesso! ✅"
@@ -139,7 +145,7 @@ autocmd VimEnter * echo "\nConfiguração carregada com sucesso! ✅"
 "
 " ESTRUTURA DE ARQUIVOS (Linux/WSL/macOS):
 "
-" Para Neovim:
+" para Neovim:
 "  ~/.config/nvim/
 "   ├── init.vim          (este VimScript)
 "   └── lua/
@@ -154,5 +160,5 @@ autocmd VimEnter * echo "\nConfiguração carregada com sucesso! ✅"
 " 1. Vim(```bash: vim): Executar :PlugInstall
 " 2. Neovim(```bash: nvim): Executar :Lazy install
 "
-" ==================================================== 
+
 
