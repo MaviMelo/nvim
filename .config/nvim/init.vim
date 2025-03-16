@@ -1,21 +1,48 @@
 
 " ====================================================
-" ARQUIVO DE CONFIGURAÇÃO HÍBRIDO VIM/NEOVIM
+"ARQUIVO DE CONFIGURAÇÃO HÍBRIDO VIM/NEOVIM
 " ====================================================
 
 " Verifica se está rodando no Neovim (para comportamentos específicos)
 let g:is_nvim = has('nvim') " bite 1 = NeoVim, bite 0 = Vim tradicional
-
+     
 " ====================================================
 "            CONFIGURAÇÕES BÁSICAS
 " ====================================================
 
-" Ativa recursos visuais básicos
-syntax on               " Habilita coloração sintática
+" Ativa recursos visuais básicos e exibição
+syntax enable           " Habilita coloração sintática
+colorscheme wildcharm    " Define o tema de cores (ex.: pablo, wildcharm, desert, darkblue...)
+
+
+" Destaques de sintaxe (certos terminais pode não suportar algumas dessas configurações)
+highlight Comment guifg=#565f89 gui=italic  " Define a cor e o estilo dos comentários no código
+highlight String guifg=#9ece6a              " Cor das STRINGS
+highlight Number guifg=#ff9e64              " Cor dos números no código
+highlight Keyword guifg=#7aa2f7 gui=bold    " Cor e estilo das palavras-chave (como if, for)
+highlight Function guifg=#bb9af7            " Define a cor dos nomes de funções
+highlight Identifier guifg=#73daca          " Cor de identificadores (variáveis, nomes de classes)
+highlight Type guifg=#7aa2f7                " Tipos de dados (como int, string, boolean)
+highlight Delimiter guifg=#00ff00           " Cor de caracteres como {}, (), [], ,, ;, etc
+" highlight CursorLine guibg=#2a2b3d          " Cor da linha do cursor
+highlight LineNr guifg=#565f89              " Cor dos Números de linha
+highlight Visual guibg=#ffffff              " Destaque de seleção
+set background=dark                         " Cor de plano de fundo. para claro usar 'light'
+highlight StatusLine guibg=#444444 guifg=#eeeeee   " barra de status (linha inferior do Vim)
+highlight MatchParen guifg=#ff0000 guibg=#eff218 gui=bold "destacar colchetes, chaves e parênteseis com o cursor
+highlight Normal guibg=#111010 guifg=#ffffff    " cor de fundo e tema geral 
+" highlight Normal guibg=#000120 guifg=#ffffff  " cor de fundo e tema geral azul escuro
+" highlight Normal guibg=#1a1b26 guifg=#a9b1d6   " cor de fundo e tema geral deserto 
+
+set laststatus=2       " Exibe a barra de status sempre
+set wildmenu           " Exibe menu de sugestões de comandos incompletos
+set termguicolors      " Habilita cores verdadeiras (24-bit) 
 set number             " Mostra números das linhas
 set relativenumber     " Números relativos (distância da linha atual)
 set cursorline         " Destaca linha onde está o cursor
 set mouse=a            " Habilita mouse em todos os modos (a = all)
+set showcmd            " Exibe comandos digitados parcialmente na barra de estatus
+set cmdheight=8        " Altura da barra de comandos em número de linhas
 
 " Configuração de indentação e tabs
 set tabstop=4          " Cada TAB mostra 4 espaços visuais
@@ -80,24 +107,6 @@ endif
  set runtimepath^=~/.config/nvim  
 
 " ====================================================
-"       CONFIGURAÇÃO LUA (SOMENTE PARA NEOVIM)
-" ====================================================
-if g:is_nvim
-  " Configuração do path para módulos Lua
-  
-  lua <<EOF
-  --[[Adiciona o diretório lua ao package.path]]
-    package.path = package.path .. ';' .. vim.env.HOME .. '~/.config/nvim/lua/?.lua'
-EOF
-
-  " Configuração do runtimepath
-  set runtimepath^=~/.config/nvim
-
-  " Carrega configuração principal
-  lua require('config')
-endif
-
-" ====================================================
 "              MAPEAMENTOS DE TECLAS
 " ====================================================
 let mapleader = '\' " Define a tecla líder (prefixo para atalhos)
@@ -112,7 +121,7 @@ else
 endif
 
 " Limpar destaque de buscas
-nnoremap <silent> <leader>h :nohlsearch<CR>
+nnoremap  <leader>h :nohlsearch<CR>
 
 " Navegador de arquivos natico (Netrw)
 "if !g:is_nvim
@@ -125,6 +134,73 @@ nnoremap <silent> <leader>h :nohlsearch<CR>
 filetype on           " Habilita detecção de tipo de arquivo
 filetype plugin on    " Carrega plugins específicos por tipo
 filetype indent on    " Carrega regras de indentação específicas
+
+if !g:is_nvim         " para Vim
+
+" Altera o cursor dependendo do modo
+if &term =~ 'xterm\|rxvt\|kitty'
+    let &t_SI = "\<Esc>[6 q"  " Modo Insert: cursor vertical
+    let &t_EI = "\<Esc>[3 q"  " Modo Normal: cursor underline piscante
+    let &t_SR = "\<Esc>[4 q"  " Modo Replace: cursor underline
+endif
+"-----------------------------------------------------
+  " piscar linha do cursor p/ sinalizar cópia de texto no modo visual
+  " Ativa o destaque temporário apenas durante cópias no modo visual
+  vnoremap <silent> y :<C-U>call VisualYankWithBlink()<CR>
+
+  " Configuração do efeito visual
+  highlight YankFlashLine ctermbg=Yellow guibg=#FFFF00
+  let g:yank_flash_duration = 200 " Tempo em milissegundos
+
+  function! VisualYankWithBlink()
+      " Salva a posição original do cursor
+      let original_pos = getpos(".")
+
+      " Executa a cópia normal
+      normal! gvy
+
+      " Adiciona destaque na linha atual
+      let current_line = line('.')
+      let match_id = matchadd('YankFlashLine', '\%' . current_line . 'l')
+
+      " Força redesenho para mostrar o destaque
+      redraw
+
+      " Mantém o destaque por um curto período
+      execute 'sleep ' . g:yank_flash_duration . 'm'
+
+      " Remove o destaque e restaura o cursor
+      call matchdelete(match_id)
+      call setpos('.', original_pos)
+
+      " Redesenho final para limpar
+      redraw
+  endfunction
+
+endif
+
+" ====================================================
+"       CONFIGURAÇÃO LUA (SOMENTE PARA NEOVIM)
+" ====================================================
+if g:is_nvim
+
+" Sinalizar texto copiado (yank)
+au TextYankPost * silent! lua vim.highlight.on_yank { higroup='IncSearch', timeout=300 }
+
+
+" Configuração do path para módulos Lua
+  lua <<EOF
+  --[[Adiciona o diretório lua ao package.path]]
+    package.path = package.path .. ';' .. vim.env.HOME .. '~/.config/nvim/lua/?.lua'
+EOF
+
+  " Configuração do runtimepath
+  set runtimepath^=~/.config/nvim
+
+  " Carrega configuração principal
+  lua require('config')
+endif
+
 
 " ====================================================
 "          MENSAGENS INICIAIS
