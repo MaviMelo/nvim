@@ -1,3 +1,4 @@
+
 --[[
 ================================================================================
                     CONFIGURAÇÃO PRINCIPAL DO NEOVIM COM LAZY.NVIM
@@ -6,13 +7,53 @@ Este arquivo usa o Lazy.nvim como gerenciador de plugins. Cada seção está com
 para explicar sua finalidade e funcionamento.
 --]]
 
+
+--[[::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+=======INSTALAÇÕES BÁSICAS PARA UM HAMBIENTE DE DESENVOLVIMENTO WEB.===========
+
+# (Instalação global ou como dependencias de desenvolvimento de um projeto no linux/WSL)
+
+# Instala o Node.js e o NPM (Node Package Manager), necessários para ferramentas
+# como eslint_d e prettier
+sudo apt install nodejs npm
+
+# Instala o cURL, uma ferramenta de linha de comando para transferências de dados
+# (usada por alguns scripts de instalação)
+sudo apt install curl
+
+# Instala globalmente os pacotes do Node: neovim (suporte a plugins Node.js no
+# 3 Neovim), eslint_d (linter rápido para JS/TS) e prettier (formatador de código)
+sudo npm install -g neovim eslint_d prettier
+
+# (corrigido) Instala globalmente o pacote `vscode-langservers-extracted`, que
+# inclui servidores de linguagem como HTML, CSS e JSON
+sudo npm install -g vscode-langservers-extracted
+
+# Instala globalmente o `htmlhint`, uma ferramenta para verificar a qualidade do
+# código HTML
+sudo npm install -g htmlhint
+
+# Instala o gerenciador de pacotes Lua (luarocks), e depois instala o linter
+# `luacheck` via apt (usado para checar código Lua)
+sudo apt install luarocks && sudo apt install luacheck
+
+
+--::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+--]]
+
+
+
+
+
 --[[----------------------------------------------
                 INICIALIZAÇÃO
 --------------------------------------------------
 Verificação inicial e carregamento do Lazy.nvim
 --]]
 -- Mensagem inicial para verificação de carregamento
-print("Iniciando carregamento da configuração...")
+ print("Iniciando carregamento da configuração...")
 
 -- Define o caminho de instalação do Lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -40,6 +81,7 @@ Lista todos os plugins com suas configurações específicas.
 Cada plugin é uma tabela com metadados e configurações.
 --]]
 require("lazy").setup({
+
 	--[[:::::::::::::::::::::::::::::::::::::::::::::
     TEMA VISUAL (TOKYONIGHT)
   ::::::::::::::::::::::::::::::::::::::::::::::::]]
@@ -55,6 +97,87 @@ require("lazy").setup({
 			print("Tema Tokyonight aplicado!")
 		end,
 	},
+
+	--[[:::::::::::::::::::::::::::::::::::::::::::::
+    DESTACAR A INDENTAÇÃO COM LINHAS VERTICAIS
+  ::::::::::::::::::::::::::::::::::::::::::::::::]]
+  {
+  "lukas-reineke/indent-blankline.nvim",
+  main = "ibl",
+  opts = {},
+  config = function()
+    require("ibl").setup({
+      indent = {
+        char = "▏", -- ou "┊", "¦", "⎸", "▏", "│"
+      },
+      scope = {
+        enabled = true, -- mostra linhas de escopo (como blocos em if, for, etc)
+      },
+    })
+    print("Linhas de indentação ativadas!")
+  end,
+},
+
+
+   --[[:::::::::::::::::::::::::::::::::::::::::::::
+   ISERIR EMOJIS, NERD FONTES, UNICODES, ETC.
+  ::::::::::::::::::::::::::::::::::::::::::::::::]]
+  {
+  "nvim-tree/nvim-web-devicons",
+  lazy = true,
+  config = function()
+    require("nvim-web-devicons").setup({ default = true })
+  end,
+},
+
+{
+  "ziontee113/icon-picker.nvim",
+  dependencies = { "stevearc/dressing.nvim" },
+  config = function()
+    require("icon-picker").setup({
+      disable_legacy_commands = true -- para evitar comandos duplicados
+    })
+  end,
+  keys = {
+    { "<leader>zm", "<cmd>IconPickerInsertEmoji<cr>", desc = "Inserir Emoji" },
+    { "<leader>mz", "<cmd>IconPickerInsertIcon<cr>", desc = "Inserir Ícone" },
+    { "<leader>zz", "<cmd>IconPickerYank<cr>", desc = "Copiar Emoji/Ícone" },
+  }
+},
+
+	--[[:::::::::::::::::::::::::::::::::::::::::::::
+    TELESCOPE: ITERFACE DE BUSCA.
+  ::::::::::::::::::::::::::::::::::::::::::::::::]]
+
+{
+  "nvim-telescope/telescope.nvim",
+  tag = "0.1.4",
+  dependencies = {
+    "nvim-lua/plenary.nvim", -- dependência obrigatória
+    "nvim-telescope/telescope-fzf-native.nvim", -- extensão para busca mais rápida (opcional, mas recomendada)
+    build = "make", -- precisa de make instalado
+  },
+  config = function()
+    require("telescope").setup({
+      defaults = {
+        layout_strategy = "vertical",
+        layout_config = {
+          height = 0.95,
+          preview_cutoff = 10,
+        },
+      },
+    })
+
+    -- Carrega extensão fzf se estiver instalada
+    pcall(require("telescope").load_extension, "fzf")
+  end,
+  keys = {
+    { "<leader>tf", "<cmd>Telescope find_files<cr>", desc = "Procurar arquivos" },
+    { "<leader>tg", "<cmd>Telescope live_grep<cr>", desc = "Procurar texto (grep)" },
+    { "<leader>tb", "<cmd>Telescope buffers<cr>", desc = "Listar buffers" },
+    { "<leader>th", "<cmd>Telescope help_tags<cr>", desc = "Ajuda" },
+  }
+},
 
 	--[[:::::::::::::::::::::::::::::::::::::::::::::
     SISTEMA DE AUTOCOMPLETE (NVIDIA-CMP)
@@ -184,7 +307,15 @@ require("lazy").setup({
 		"williamboman/mason-lspconfig.nvim",
 		dependencies = { "williamboman/mason.nvim" },
 		config = function()
-			require("mason-lspconfig").setup()
+			require("mason-lspconfig").setup({
+         ensure_installed = {
+    "tsserver",     -- TypeScript/JavaScript
+    "html",         -- HTML
+    "cssls",        -- CSS (já inclui variáveis)
+    "eslint",       -- Opcional
+    -- "tailwindcss" -- Se usar Tailwind
+  }
+      })
 			print("Mason: Use :Mason para gerenciar LSPs")
 		end,
 	},
@@ -194,36 +325,31 @@ require("lazy").setup({
   ::::::::::::::::::::::::::::::::::::::::::::::::]]
 	{
 		"neovim/nvim-lspconfig",
+    version = "0.1.7",  -- Última versão compatível com Neovim 0.9
+    lock = true, -- Força o Lazy a respeitar a versão
 		event = "BufReadPre", -- Carrega antes de abrir arquivos
 		config = function()
 			-- Configura LSPs específicos
-			require("lspconfig").html.setup({})
+			require("lspconfig").html.setup({
+
+                on_attach = function(client, bufnr)
+        -- Ativa diagnósticos visíveis para HTML
+        vim.diagnostic.config({
+          virtual_text = true,
+          signs = true,
+          underline = true,
+          update_in_insert = false,
+          severity_sort = true,
+        })
+      end
+            })
 			require("lspconfig").cssls.setup({})
 			print("LSPs para HTML/CSS carregados!")
 		end,
 	},
 
 	--[[:::::::::::::::::::::::::::::::::::::::::::::
-    FORMATAÇÃO E DIAGNÓSTICO (NULL-LS)
-  ::::::::::::::::::::::::::::::::::::::::::::::::]]
-	{
-		"jose-elias-alvarez/null-ls.nvim",
-		dependencies = { "nvim-lua/plenary.nvim" },
-		config = function()
-			local null_ls = require("null-ls")
-			null_ls.setup({
-				sources = {
-					null_ls.builtins.diagnostics.eslint_d, -- Verificação de código
-					null_ls.builtins.code_actions.eslint_d, -- Correções automáticas
-					null_ls.builtins.formatting.prettier, -- Formatação automática
-				},
-			})
-			print("Prettier/ESlint configurados!")
-		end,
-	},
-
-	--[[:::::::::::::::::::::::::::::::::::::::::::::
-    VERIFICAÇÃO DE CÓDIGO (NVIDIA-LINT)
+    VERIFICAÇÃO DE CÓDIGO (NVIM-LINT)
   ::::::::::::::::::::::::::::::::::::::::::::::::]]
 	{
 		"mfussenegger/nvim-lint",
@@ -231,12 +357,15 @@ require("lazy").setup({
 		config = function()
 			require("lint").linters_by_ft = {
 				lua = { "luacheck" }, -- Linter para Lua
+                html = { "htmlhint" }, -- Adiciona o linter para HTML
 				javascript = { "eslint_d" }, -- Linter para JS
 				typescript = { "eslint_d" }, -- Linter para TS
+                python = {'flake8'}, --Linter para python
+
 			}
 			-- Executa verificação ao salvar arquivos Lua
 			vim.api.nvim_create_autocmd("BufWritePost", {
-				pattern = "*.lua",
+				pattern = "*",
 				callback = function()
 					require("lint").try_lint()
 				end,
@@ -291,7 +420,19 @@ vim.g.user_emmet_settings = {
 </html>]],
 		},
 	},
-}
+},
+
+--[[----------------------------------------------
+            ÁTALHOS PERSONALIZADOS
+--------------------------------------------------]]
+vim.keymap.set('n', '<leader>ff', function()
+  vim.lsp.buf.format()
+end, { desc = 'Formatação/identação' }),
+
+vim.keymap.set('n', '<leader>l', function()
+  require("lint").try_lint()
+end, { desc = "Executa linter manualmente" })
+
 
 --[[----------------------------------------------
             MENSAGEM FINAL
