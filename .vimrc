@@ -12,8 +12,10 @@ let g:is_nvim = has('nvim') " bite 1 = NeoVim, bite 0 = Vim tradicional
 
 " Ativa recursos visuais básicos e exibição
 syntax enable           " Habilita coloração sintática
-colorscheme wildcharm    " Define o tema de cores (ex.: pablo, wildcharm, desert, darkblue...)
 
+if !g:is_nvim         " para Vim
+    colorscheme wildcharm    " Define o tema de cores (ex.: pablo, wildcharm, desert, darkblue...)
+endif
 
 " Destaques de sintaxe (certos terminais pode não suportar algumas dessas configurações)
 highlight Comment guifg=#565f89 gui=italic  " Define a cor e o estilo dos comentários no código
@@ -118,6 +120,8 @@ if g:is_nvim
 else
   " vim: Atualiza plugins vim-plug
   nnoremap <leader>rr :source $MYVIMRC <bar> PlugInstall<CR>
+  " Carrega arquivo.ts (TypeScript) no buffer atual com ts-node (se estiver instalado) 
+  nnoremap <leader>r :!ts-node --compiler-options '{"module":"commonjs"}' %<CR>
 endif
 
 " Limpar destaque de buscas
