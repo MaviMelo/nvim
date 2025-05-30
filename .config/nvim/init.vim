@@ -1,81 +1,86 @@
 
-" ====================================================
-"ARQUIVO DE CONFIGURAÇÃO HÍBRIDO VIM/NEOVIM
-" ====================================================
+  " ====================================================
+  "ARQUIVO DE CONFIGURAÇÃO HÍBRIDO VIM/NEOVIM
+  " ====================================================
 
-" Verifica se está rodando no Neovim (para comportamentos específicos)
-let g:is_nvim = has('nvim') " bite 1 = NeoVim, bite 0 = Vim tradicional
-     
-" ====================================================
-"            CONFIGURAÇÕES BÁSICAS
-" ====================================================
+  " Verifica se está rodando no Neovim (para comportamentos específicos)
+  let g:is_nvim = has('nvim') " bite 1 = NeoVim, bite 0 = Vim tradicional
+       
+  " ====================================================
+  "            CONFIGURAÇÕES BÁSICAS
+  " ====================================================
 
-" Ativa recursos visuais básicos e exibição
-syntax enable           " Habilita coloração sintática
+  " Ativa recursos visuais básicos e exibição
+  syntax enable           " Habilita coloração sintática
 
 if !g:is_nvim         " para Vim
-    colorscheme wildcharm    " Define o tema de cores (ex.: pablo, wildcharm, desert, darkblue...)
+
+  colorscheme wildcharm    " Define o tema de cores (ex.: pablo, wildcharm, desert, darkblue...)
+
+  " Destaques de sintaxe (certos terminais pode não suportar algumas dessas configurações)
+
+  highlight Comment guifg=#565f89 gui=italic  " Define a cor e o estilo dos comentários no código
+  highlight String guifg=#9ece6a              " Cor das STRINGS
+  highlight Number guifg=#ff9e64              " Cor dos números no código
+  highlight Keyword guifg=#7aa2f7 gui=bold    " Cor e estilo das palavras-chave (como if, for)
+  highlight Function guifg=#bb9af7            " Define a cor dos nomes de funções
+  highlight Identifier guifg=#73daca          " Cor de identificadores (variáveis, nomes de classes)
+  highlight Type guifg=#7aa2f7                " Tipos de dados (como int, string, boolean)
+  highlight Delimiter guifg=#00ff00           " Cor de caracteres como {}, (), [], ,, ;, etc
+  " highlight CursorLine guibg=#2a2b3d          " Cor da linha do cursor
+  highlight LineNr guifg=#565f89              " Cor dos Números de linha
+  highlight Visual guibg=#383645              " Destaque de seleção
+  " set background=dark                     " Cor de plano de fundo. para claro usar 'light'
+  highlight StatusLine guibg=#444444 guifg=#eeeeee   " barra de status (linha inferior do Vim)
+  " highlight Normal guibg=#111010 guifg=#ffffff    " cor de fundo e tema geral 
+  " highlight Normal guibg=#000120 guifg=#ffffff  " cor de fundo e tema geral azul escuro
+  " highlight Normal guibg=#1a1b26 guifg=#a9b1d6   " cor de fundo e tema geral deserto
+
 endif
 
-" Destaques de sintaxe (certos terminais pode não suportar algumas dessas configurações)
-highlight Comment guifg=#565f89 gui=italic  " Define a cor e o estilo dos comentários no código
-highlight String guifg=#9ece6a              " Cor das STRINGS
-highlight Number guifg=#ff9e64              " Cor dos números no código
-highlight Keyword guifg=#7aa2f7 gui=bold    " Cor e estilo das palavras-chave (como if, for)
-highlight Function guifg=#bb9af7            " Define a cor dos nomes de funções
-highlight Identifier guifg=#73daca          " Cor de identificadores (variáveis, nomes de classes)
-highlight Type guifg=#7aa2f7                " Tipos de dados (como int, string, boolean)
-highlight Delimiter guifg=#00ff00           " Cor de caracteres como {}, (), [], ,, ;, etc
-" highlight CursorLine guibg=#2a2b3d          " Cor da linha do cursor
-highlight LineNr guifg=#565f89              " Cor dos Números de linha
-highlight Visual guibg=#ffffff              " Destaque de seleção
-set background=dark                         " Cor de plano de fundo. para claro usar 'light'
-highlight StatusLine guibg=#444444 guifg=#eeeeee   " barra de status (linha inferior do Vim)
-highlight MatchParen guifg=#ff0000 guibg=#eff218 gui=bold "destacar colchetes, chaves e parênteseis com o cursor
-highlight Normal guibg=#111010 guifg=#ffffff    " cor de fundo e tema geral 
-" highlight Normal guibg=#000120 guifg=#ffffff  " cor de fundo e tema geral azul escuro
-" highlight Normal guibg=#1a1b26 guifg=#a9b1d6   " cor de fundo e tema geral deserto 
+  highlight MatchParen guifg=#ff6200 guibg=#eff218 gui=bold    " destacar colchetes, chaves e parênteseis com o cursor 
+  
 
-set laststatus=2       " Exibe a barra de status sempre
-set wildmenu           " Exibe menu de sugestões de comandos incompletos
-set termguicolors      " Habilita cores verdadeiras (24-bit) 
-set number             " Mostra números das linhas
-set relativenumber     " Números relativos (distância da linha atual)
-set cursorline         " Destaca linha onde está o cursor
-set mouse=a            " Habilita mouse em todos os modos (a = all)
-set showcmd            " Exibe comandos digitados parcialmente na barra de estatus
-set cmdheight=8        " Altura da barra de comandos em número de linhas
+  set laststatus=2       " Exibe a barra de status sempre
+  set wildmenu           " Exibe menu de sugestões de comandos incompletos
+  set termguicolors      " Habilita cores verdadeiras (24-bit) 
+  set number             " Mostra números das linhas
+  set relativenumber     " Números relativos (distância da linha atual)
+  set cursorline         " Destaca linha onde está o cursor
+  set mouse=a            " Habilita mouse em todos os modos (a = all)
+  set showcmd            " Exibe comandos digitados parcialmente na barra de estatus
+  set cmdheight=8        " Altura da barra de comandos em número de linhas
 
-" Configuração de indentação e tabs
-set tabstop=4          " Cada TAB mostra 4 espaços visuais
-set softtabstop=4      " Número de espaços ao pressionar TAB/BACKSPACE
-set shiftwidth=2       " Número de espaços para indentação automática
-set expandtab          " Converte TABs em espaços físicos
-set smarttab           " Indentação inteligente em diferentes contextos
-set autoindent         " Mantém indentação da linha anterior
-set smartindent        " Indentação inteligente baseada na sintaxe
+  " Configuração de indentação e tabs
+  set tabstop=4          " Cada TAB mostra 4 espaços visuais
+  set softtabstop=4      " Número de espaços ao pressionar TAB/BACKSPACE
+  set shiftwidth=2       " Número de espaços para indentação automática
+  set expandtab          " Converte TABs em espaços físicos
+  set smarttab           " Indentação inteligente em diferentes contextos
+  set autoindent         " Mantém indentação da linha anterior
+  set smartindent        " Indentação inteligente baseada na sintaxe
 
-" Configuração de busca
-set incsearch          " Busca incremental (mostra resultados enquanto digita)
-set ignorecase         " Ignora maiúsculas/minúsculas nas buscas
-set smartcase          " Se a busca tiver maiúsculas, torna-se case-sensitive
-set hlsearch           " Destaca todos os resultados da busca
+  " Configuração de busca
+  set incsearch          " Busca incremental (mostra resultados enquanto digita)
+  set ignorecase         " Ignora maiúsculas/minúsculas nas buscas
+  set smartcase          " Se a busca tiver maiúsculas, torna-se case-sensitive
+  set hlsearch           " Destaca todos os resultados da busca
 
-" Outras configurações importantes
-set hidden             " Permite trocar buffers sem salvar
-set scrolloff=8        " Mantém 8 linhas de margem ao rolar
-set colorcolumn=100    " Marca visual na coluna 100 (evita linhas longas)
-set signcolumn=yes     " Coluna lateral para sinais (erros, avisos)
-set cmdheight=2        " Altura da área de comandos (para mensagens)
-set updatetime=100     " Tempo (ms) para operações assíncronas (ex: LSP)
-set nobackup           " Não cria arquivos de backup (~)
-set nowritebackup      " Não cria backup durante edição
-set splitright         " Divide janelas verticais à direita
-set splitbelow         " Divide janelas horizontais abaixo
-set autoread           " Recarrega arquivos modificados externamente
-set history=1000       " Aumenta histórico de comandos
-set encoding=utf-8     " Codificação interna
-set fileencoding=utf-8 " Codificação dos arquivos
+  " Outras configurações importantes
+  set hidden             " Permite trocar buffers sem salvar
+  set scrolloff=8        " Mantém 8 linhas de margem ao rolar
+  set colorcolumn=80    " Marca visual na enésima coluna (evita linhas longas)
+  set signcolumn=yes     " Coluna lateral para sinais (erros, avisos)
+  set cmdheight=2        " Altura da área de comandos (para mensagens)
+  set updatetime=100     " Tempo (ms) para operações assíncronas (ex: LSP)
+  set nobackup           " Não cria arquivos de backup (~)
+  set nowritebackup      " Não cria backup durante edição
+  set splitright         " Divide janelas verticais à direita
+  set splitbelow         " Divide janelas horizontais abaixo
+  set autoread           " Recarrega arquivos modificados externamente
+  set history=1000       " Aumenta histórico de comandos
+  set encoding=utf-8     " Codificação interna
+  set fileencoding=utf-8 " Codificação dos arquivos
 
 " Configuração de clipboard integrado (copiar e colar com ambiente externo ao aditor)
 if has('clipboard')
@@ -210,14 +215,14 @@ endif
 "          MENSAGENS INICIAIS
 " ====================================================
 autocmd VimEnter * echo "Editor configurado! Comandos úteis:\n"
-      \  "  :nmap          - Listar atalhos\n"
-      \  "  :e $MYVIMRC    - Editar configuração\n"
+      \  "  :nmap           - Listar atalhos dessa configuração\n"
+      \  "  :e $MYVIMRC     - Editar configuração (VimScript)\n"
       \  (g:is_nvim ? 
-      \  "  :Lazy install  - Instalar plugins Lua" : 
-      \  "  :PlugInstall   - Instalar plugins Vim")
+      \  "  :Lazy install   - Instalar plugins Lua" :
+      \  "  :PlugInstall    - Instalar plugins Vim\n    :checkhealth    - Verificar saúde dos plugins" )
 
 " Confirmação de carregamento
-autocmd VimEnter * echo "\nConfiguração carregada com sucesso! ✅"
+autocmd VimEnter * echo "\nConfiguração VimScript carregada! ✅"
 
 " ====================================================
 "          NOTAS DE INSTALAÇÃO

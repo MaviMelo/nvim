@@ -1,17 +1,17 @@
 --[[
-================================================================================
-                    CONFIGURAÇÃO PRINCIPAL DO NEOVIM COM LAZY.NVIM
-================================================================================
-Este arquivo usa o Lazy.nvim como gerenciador de plugins. Cada seção está comentada
-para explicar sua finalidade e funcionamento afim de ajudar/fcilitar a compreenção
-e customização.
---]]
+  ================================================================================
+                      CONFIGURAÇÃO PRINCIPAL DO NEOVIM COM LAZY.NVIM
+  ================================================================================
+  Este arquivo usa o Lazy.nvim como gerenciador de plugins. Cada seção está comentada
+  para explicar sua finalidade e funcionamento afim de ajudar/fcilitar a compreenção
+  e customização.
+  --]]
 
 
 --[[::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-=======INSTALAÇÕES BÁSICAS PARA UM HAMBIENTE DE DESENVOLVIMENTO WEB.===========
+  =======INSTALAÇÕES BÁSICAS PARA UM HAMBIENTE DE DESENVOLVIMENTO WEB.===========
 
 # (Instalação global ou como dependencias de desenvolvimento de um projeto no linux/WSL)
 alternativa
@@ -49,10 +49,10 @@ sudo apt install luarocks && sudo apt install luacheck
 
 
 
-===>  IPORTANTE: hÁ DISPONIVEL UM SCRIPT QUE ALTOMATIZA ALGUMAS DESSAS E OUTRRAS
-DEPENDENCIAS PARA CONFIGURAÇÃO DE DESENVOLVIMENTO WEB COM O NEOVIM.
-EXECUTE NO TERMINAL BASH:
-                  --->  sudo bash ~/.config/nvim/setup.sh   <-----
+===>  IPORTANTE: hÁ DISPONIVEL UM SCRIPT QUE ALTOMATIZA INSTALAÇÕES DE ALGUMAS 
+DESSAS E OUTRRAS DEPENDENCIAS PARA CONFIGURAÇÃO DE DESENVOLVIMENTO WEB COM O NEOVIM.
+EXECUTE NO TERMINAL BASH COMO ADMINISTRADOR (USUÁRIO root):
+                  --->  sudo bash -x ~/.config/nvim/setup.sh   <-----
 --::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 --]]
 
@@ -135,7 +135,7 @@ require("lazy").setup({
       })
     end,
     keys = {
-      { "<leader>zm", "<cmd>IconPickerYank emoji<cr>",   noremap = true, silent = false,           desc = "Inserir Emoji" },
+      { "<leader>zm", "<cmd>IconPickerYank emoji<cr>",   noremap = true, silent = false,             desc = "Inserir Emoji" },
       { "<leader>mz", "<cmd>IconPickerYank symbols<cr>", silent = false, desc = "Inserir símbolo" },
       { "<leader>zz", "<cmd>IconPickerYank<cr>",         silent = false, desc = "Inserir caracteres" },
     }
@@ -300,9 +300,12 @@ require("lazy").setup({
         -- Mapeamentos básicos (evitar funções não disponíveis em 0.9.5)
         local opts = { buffer = bufnr, silent = true }
 
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts {desc= "Vai para a definição de uma variável, função, etc."})
-        vim.keymap.set('n', 'gf', vim.lsp.buf.hover, opts {desc= "Mostra uma janela flutuante com a documentação/descrição do item sob o cursor."})
-        vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts {desc= "Renomeia simbolicamente a variável em todos os lugares (refatoração)."})
+        vim.keymap.set('n', 'gd', vim.lsp.buf.definition,
+          opts { desc = "Vai para a definição de uma variável, função, etc." })
+        vim.keymap.set('n', 'gf', vim.lsp.buf.hover,
+          opts { desc = "Mostra uma janela flutuante com a documentação/descrição do item sob o cursor." })
+        vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename,
+          opts { desc = "Renomeia simbolicamente a variável em todos os lugares (refatoração)." })
 
         -- Desativa formatação via LSP para evitar conflitos
         -- client.server_capabilities.documentFormattingProvider = false
@@ -370,14 +373,35 @@ require("lazy").setup({
     "mattn/emmet-vim",
     ft = { "html", "css", "javascriptreact", "typescriptreact" }, -- Só carrega nesses arquivos
     config = function()
-      noremap = true                    -- Configuraeões específicas do Emmet
+      noremap = true                                              -- Configuraeões específicas do Emmet
       silent = false
-      vim.g.user_emmet_mode = "n"       -- Ativa no modo normal
-      vim.g.user_emmet_leader_key = "," -- Tecla líder para expansão
+      vim.g.user_emmet_mode = "n"                                 -- Ativa no modo normal
+      vim.g.user_emmet_leader_key = ","                           -- Tecla líder para expansão
       print("Emmet pronto para HTML/CSS!")
     end,
   },
 
+-- LUASNIP: MECANISMO DE SNIPPETS PARA QUALQUER LINGUAGEM
+{
+  "L3MON4D3/LuaSnip",
+  version = "v2.*", -- Fixa a versão 2, compatível com Neovim 0.9.5
+  event = "InsertEnter", -- Carrega ao entrar no modo de inserção (lazy load)
+  build = "make install_jsregexp", -- (opcional) para suporte a regex avançado
+  dependencies = { "rafamadriz/friendly-snippets" }, -- Snippets prontos (opcional)
+  config = function()
+    local luasnip = require("luasnip")
+
+    -- Configuração básica
+    luasnip.config.set_config({
+      history = true,
+      updateevents = "TextChanged,TextChangedI",
+      enable_autosnippets = true,
+    })
+
+    -- Carrega snippets no formato do VSCode (ex: do friendly-snippets)
+    require("luasnip.loaders.from_vscode").lazy_load()
+  end,
+},
 
   -- LINTER COM NVIM-LINT
   {
@@ -440,15 +464,25 @@ vim.g.user_emmet_settings = {
       -- Snippet personalizado para HTML5
       ["!"] = [[
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <!-- Define a largura da página como a largura do dispositivo e impede o zoom manual -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+  <!-- link CSS 
+   <link rel="stylesheet" href="css/styles.css">
+  -->
 </head>
 <body>
     <!-- Conteúdo -->
+
+    <footer>
+    </footer>
+    
+    <!-- link JavaScript
+     <script src="js/scripts.js" defer></script>
+    -->
 </body>
 </html>]],
     },
@@ -470,13 +504,23 @@ vim.opt.mouse = "a"           -- Mouse em todos os modos
 --[[----------------------------------------------
            ATALHOS PERSONALIZADOS
 --------------------------------------------------]]
-vim.keymap.set("n", "<leader>ff", vim.lsp.buf.format, { noremap = true, silent = false, desc =
-"Formatar identação do código" })
+vim.keymap.set("n", "<leader>ff", vim.lsp.buf.format, {
+  noremap = true,
+  silent = false,
+  desc =
+  "Formatar identação do código"
+})
 
 vim.keymap.set("n", "<leader>mn", function()
-  local file = vim.fn.expand("%")
-  vim.cmd("!" .. "ts-node --compiler-options '{\"module\":\"commonjs\"}' " .. file)
-end, { noremap = true, silent=true, desc = "Carrega arquivo.ts (TypeScript) no buffer atual com ts-node (se estiver instalado)" })
+    local file = vim.fn.expand("%")
+    vim.cmd("! for i in {1..5}; do echo; done && ts-node --compiler-options '{\"module\":\"commonjs\"}' " .. file)
+  end,
+  {
+    noremap = true,
+    silent = true,
+    desc =
+    "Carrega arquivo.ts (TypeScript) no buffer atual com ts-node (se estiver instalado)"
+  })
 
 
 -- Mostrar diagnóstico
@@ -503,8 +547,12 @@ vim.keymap.set("n", "<C-j>", ":resize +2<CR>", { noremap = true, silent = false,
 vim.keymap.set("n", "<C-h>", ":vertical resize -2<CR>",
   { noremap = true, silent = false, desc = "Diminuição hrizontal de janela" })
 
-vim.keymap.set("n", "<C-l>", ":vertical resize +2<CR>", { noremap = true, silent = false, desc =
-"Aumento hrizontal de janela" })
+vim.keymap.set("n", "<C-l>", ":vertical resize +2<CR>", {
+  noremap = true,
+  silent = false,
+  desc =
+  "Aumento hrizontal de janela"
+})
 
 
 
@@ -520,7 +568,7 @@ vim.schedule(function()
       print("❌ Binário não encontrado: " .. bin)
     end
   end
-  print("Configuração carregada! ✅")
+  print("Configuração em LuaScript carregada! ✅")
 end)
 
 --[[----------------------------------------------

@@ -1,0 +1,105 @@
+
+Como fechar o Vim/NeoVim coretamente:
+
+	:q  # Fecha a split (divisão de janela) atual se não houver mudanças não salvas
+	:wq  # Salva e fecha
+	:q!  # Fecha a split atual, descartando mudanças
+	:qa!  # Fecha tudo, descartando mudanças
+
+Isso evita processos suspensos. 
+
+Dica (uso no terminal Linux (bash)):
+    Ctrl + Z → Suspende o programa atual (no caso o Vim/NeoVim) e retorna ao terminal.
+
+    jobs → Lista processos suspensos/em segundo plano.
+
+    fg %N → Retoma o job N (ex: fg %1).
+
+    kill %N → Mata o job N.
+
+
+
+
+Comandos úteis para splits (divisões de janela):
+
+Comando			Descrição:
+
+:new 			Abre um novo buffer em uma janela horizontal
+:vnew			Abre um novo buffer em uma janela vertical
+:split 			Abre uma janela vertical
+:vsplit <file>		Abre um arquivo em uma janela vertical
+:vs <file>		Atalho para :vsplit
+
+Exemplos:
+
+Abrir um novo buffer vazio na vertical:
+'''vim
+	:vnew 
+
+Abrir um arquivo específico na vertical:
+'''vim
+	:vsplit ~/.config/nvim/init.lua
+
+ou simplesmente:
+'''vim
+	:vs init.lua  " Se o arquivo estiver no diretório atual
+
+Se você quiser fazer isso a partir do nvim-tree:
+
+    Navegue até o arquivo no nvim-tree.
+
+    Pressione:
+
+        v → Abre o arquivo em um split vertical.
+
+        h → Abre em um split horizontal (equivalente ao :new).
+
+Dica extra:
+
+    Para alternar entre janelas, use Ctrl + w + hjkl (movimento vim-style) ou Ctrl + w + w (alterna entre janelas).
+
+    Se quiser fechar a janela, use :q ou Ctrl + w + c.
+  
+  
+		----	Comando :ls  	----
+  
+O comando :ls (ou :buffers) no Neovim/Vim lista todos os buffers atualmente carregados na sua sessão.
+O que são buffers?
+
+    Buffers são os arquivos que você abriu no Vim/Neovim (mesmo que não estejam visíveis em uma janela).
+
+    Eles permanecem carregados até que você os feche explicitamente (:bdelete) ou saia do editor.
+
+Saída do :ls (Exemplo):
+
+:ls
+  1 %a   "init.lua"             linha 1
+  2      "plugin.lua"           linha 0
+  3 #    "README.md"            linha 5
+  4      "config.lua"           linha 0
+
+Legenda da saída:
+
+Símbolo		Significado
+%		Buffer atual (visível na janela ativa).
+#		Buffer alternativo (último buffer acessado, pode voltar com Ctrl + ^).
+a		Buffer "ativo" (carregado e visível em alguma janela).
+h		Buffer "oculto" (carregado, mas não exibido em nenhuma janela).
++		Buffer com modificações não salvas.
+
+Comandos úteis relacionados:
+
+Comando			Ação
+:b <N> ou :buffer <N>	Muda para o buffer de número N (ex: :b 2 vai para o buffer 2).
+:bdelete <N>		Remove o buffer N da memória (não fecha a janela).
+:bn / :bp		Vai para o próximo (next) ou anterior (previous) buffer.
+:sbuffer <N>		Abre o buffer N em um split horizontal.
+:vert sbuffer <N>	Abre o buffer N em um split vertical.
+
+Dica:
+
+    Use :ls! para listar todos os buffers, incluindo os ocultos (não visíveis em janelas).
+
+    Se quiser fechar todos os buffers exceto o atual, use :%bd | e# (útil para limpar a lista).
+    
+    

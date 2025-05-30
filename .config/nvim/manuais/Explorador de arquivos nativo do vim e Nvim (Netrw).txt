@@ -1,0 +1,199 @@
+
+================= Netrw ================
+
+Tutorial: Funções Netrw no Vim/Neovim + Mecanismos de Busca
+
+1. Introdução ao Netrw
+O Netrw é o gerenciador de arquivos integrado ao Vim/Neovim. Ele permite navegar em diretórios, abrir/editar arquivos, criar pastas e muito mais, sem plugins.
+
+2. Abrindo o Netrw
+Abrir no diretório atual:
+
+```vim
+	:Ex   " ou :Explore
+
+Abrir em uma divisão horizontal/vertical:
+
+```vim
+	:Sex  " Split horizontal
+	:Vex  " Split vertical
+	:Tex  " Nova aba
+
+3. Navegação Básica no Netrw
+
+Comando		Ação
+j/k		Mover para cima/baixo
+Enter		Abrir arquivo/diretório
+-		Subir um diretório
+R		Atualizar lista
+i		Alternar entre visualização (lista/árvore)
+
+4. Navegação entre Janelas
+
+Abrir arquivo em nova janela:
+
+	o: Abre em split horizontal.
+	v: Abre em split vertical.
+	t: Abre em nova aba.
+
+Trocar entre janelas:
+
+	Ctrl + w + h/j/k/l: Navegar entre splits.
+	Ctrl + w + w: Alternar entre janelas.
+
+5. Navegação entre Buffers
+Listar buffers abertos:
+
+```vim
+	:ls
+
+Trocar de buffer:
+
+```vim
+	:bN        " Próximo buffer (:bn) / Anterior (:bp)
+	:b nome    " Abrir buffer pelo nome (autocompletar com Tab)
+
+6. Criar, Copiar e Colar
+
+Criar arquivo/diretório:
+
+	%: Criar arquivo (digite o nome e pressione Enter).
+	d: Criar diretório.
+
+Copiar/Mover arquivos:
+
+	marque o destino: Navegue até a pasta e pressione mt.
+	marque o arquivo: Navegue até o arquivo e pressione mf.
+
+Execute:
+
+	mc: Copiar arquivo marcado.
+	mm: Mover arquivo.
+
+7. Busca de Arquivos/Diretórios no Netrw
+
+Buscar dentro do Netrw:
+	Pressione / e digite o termo (ex: *.txt). Use n/N para navegar resultados.
+
+Filtrar por padrão:
+	No Netrw, pressione s e digite um padrão (ex: *.py).
+
+8. Mecanismos de Busca no Vim/Neovim
+
+Busca em arquivo atual:
+
+	/termo: Buscar "termo" para frente.
+	?termo: Buscar para trás.
+	n/N: Próximo/anterior resultado.
+
+Buscar palavra sob o cursor:
+
+	*: Buscar próxima ocorrência da palavra.
+	#: Buscar ocorrência anterior.
+
+Busca global com :vimgrep:
+```vim
+	:vimgrep /padrão/ **/*.ext  " Ex: Buscar em todos os .js
+	:copen                      " Abrir lista de resultados
+
+Busca rápida com :find:
+```vim
+	:find nome_arquivo          " Requer configuração do `path`
+
+9. Dicas Extras
+
+Ativar destaque de busca:
+```vim
+	:set hlsearch
+
+Ignorar maiúsculas/minúsculas:
+```vim
+	:set ignorecase
+
+Resumo de Comandos Netrw:
+
+Ação			Comando
+Criar arquivo		% + nome
+Criar pasta		d + nome
+Copiar/Mover		mt → mf → mc/mm
+Busca em diretório	/ no Netrw
+
+Resumo dos Comandos:
+
+Ação:					Comando:
+
+Substituição total			:%s/\r//g  # troca quebra de linha(\r) por nada(). Útil para 
+						   limpar as quebras de linhas ocultas de textos 
+						   do Windows
+
+Substituir em seleção visual		Selecionar → :'<,'>s/palavra antiga/palavra nova/g
+Substituir em linhas com "ERROR"	:g/ERROR/s/antiga/NOVA/g
+Confirmar cada substituição		:%s/exemplo/Ex.:/gc
+						Opções durante a substituição:
+						
+						y: Substitui esta ocorrência.
+						
+						n: Ignora esta ocorrência.
+						
+						a: Substitui todas as ocorrências restantes.
+						
+						q: Cancela a operação.
+						
+						l: Substitui esta e para (útil para corrigir um erro).
+
+
+OBS.: para NeoVim, esta configuração disponibiliza o pluging NvimTree (gerenciador de arquivos para NeoVim).
+
+
+
+================= NvimTree ====================
+
+Comandos Básicos
+
+    :NvimTreeToggle - Alterna a visibilidade
+
+    :NvimTreeFocus - Foca no NvimTree
+
+    :NvimTreeFindFile - Encontra o arquivo atual na árvore
+
+Atalhos e Mapeamentos
+Mapeamentos padrão dentro do NvimTree
+
+    <CR> ou o - Abrir arquivo/pasta
+
+    <C-]> - CD na pasta
+
+    <C-v> - Abrir em split vertical
+
+    <C-x> - Abrir em split horizontal
+
+    <C-t> - Abrir em nova tab
+
+    a - Adicionar arquivo/pasta
+
+    d - Deletar
+
+    r - Renomear
+
+    c - copiar 
+
+    y - Copiar nome
+
+    Y - Copiar caminho absoluto
+
+    gy - Copiar caminho relativo
+
+    p - colar o que foi copiado
+
+    I - Mostrar/ocultar arquivos ocultos
+
+    H - Mostrar/ocultar arquivos dot (.)
+
+    R - Recarregar
+
+    - - Navegar para pasta pai
+
+    q - Fechar
+
+Pronto! Agora você pode navegar, gerenciar arquivos e buscar conteúdos com eficiência no Vim/Neovim 🚀.
+
