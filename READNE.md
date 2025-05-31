@@ -1,15 +1,27 @@
 
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
      Neovim é uma versão melhorada do Vim tradicional, que tem suporte nativo para Lua, linguagem de programação brasileira muito versátil, e gerenciadores de plugins modernos como Lazy.nvim, por exemplo. Porém o Vim ainda é o editor de texto que vem por padão em muitas distribuições de sistemas operacionais com base no kernel do Linux, apesar de que o NeoVim é estremamente facil de instalar no terminal (```bash: sudo apt install neovim).
      Muitos usuários de terminal com filosofias de trabalho minimalista e/ou que precisam trabalhar em ambientes alheios, onde não encontram suas configurações/setup de trabalho (computadores diferentes), muitas vezes procuram um editor de texto com uma configuração mínima de personalização de trabalho. Nesse caso se não quiser instalar e carregar toda uma configuração do NeoVim, ele precisa apenas criar o arquivo ' .vimrc ', com suas configurações de trabalho no diretório home (~/). 
     As configurações disponibilizadas aqui são testadas, básicas e customizáveis. Todavia é preciso garantir edição correta do código, observando o que é compativel e o que pode causar conflitos, principalmente no Vim que é mais antigo. 
 
 
-    Para carregar essas configurações para o Vim e/ou NeoVim que já estão carregados com outras configurações, antes de mover os diretório .config/nvim (configurações para o NeoVim) e/ou o arquivo .vimrc (configurações para o Vim) para o diretório home ( ~/ ) no sistema  operacional é preciso limpar as configurações antigas para não haver coflitos.
+Procedimento válido para: Linux; macOS (Unix); Windows via WSL (Windows Subsystem for Linux):
+
+Instale o Vim e/ou NeoVim (caso não já esteja) :
+'''bash:
+	sudo apt-get install vim-gtk3 	# Instala versão com suporte a clipboard.
+	
+	sudo apt install neovim 	# Instala última versão disponível no repositório.
+
+Baixe este repositório , "nvim", no diretório '~/.config' . Caso ele não existir crie-o ou baixe o repositório, criando ~/.config ou direcionando para ele se já existir, da seguinte forma:
+'''bash:
+	git clone https://github.com/MaviMelo/nvim ~/.config/nvim
+	
+
+    Caso o Vim e/ou NeoVim já estiver(em) instalado(s), para carregar essas configurações para o Vim e/ou NeoVim que já estão carregados com outras configurações, antes de mover o diretório nvim/ (configurações para o NeoVim) para a pasta ' .config/ ' e/ou o arquivo .vimrc (configurações para o Vim) para o diretório home ( ~/ ) no sistema  operacional é preciso limpar as configurações antigas para não haver coflitos.
  
 
-Procedimento válido para: Linux; macOS (Unix); Windows via WSL (Windows Subsystem for Linux):
 
   0. Se o computador não é seu e já tem configurações para o Vim e/ou NeoVim:
 
@@ -23,13 +35,14 @@ Procedimento válido para: Linux; macOS (Unix); Windows via WSL (Windows Subsyst
 	cp -r -p  ~/.vimrc  ~/.config/nvim  ~/backupvim          # A opção -p mantém metadados (data
                                                             de modificação e permissões).
 
-         0.3 Após termino do trabalho reinstale as configurações anteriores refazendo a etapa "1. Remover as configurações e dados..." e copie ou mova para ~/  (home) os backups feitos:
+         0.3 Após termino do trabalho reinstale as configurações anteriores refazendo a etapa "1. Remover as configurações e dados..." e copie ou mova os backups feitos para seus diretórios (pastas) de origem:
 
-  ```bash:
+```bash:
     cd ~/backupvim
-    cp -r -p  ~/.vimrc  ~/.config/nvim  ~/
+    cp -r -p  .vimrc  ~/
+    cp -r -p  nvim  ~/.config/
     
-1. Remover as configurações e dados antigos.
+1. Remover as configurações e dados antigos ().
 
      1.1. Para o NeoVim (```bash: nvim)
 ```bash:
@@ -67,24 +80,24 @@ Procedimento válido para: Linux; macOS (Unix); Windows via WSL (Windows Subsyst
 
 2. ESTRUTURA DE ARQUIVOS (Linux/WSL/macOS):
 
-2.1. Para Neovim:
+2.1. Para Neovim (visão redusida e genérica):
    ~/
     └── .config/
         └── nvim/
-            ├── init.vim              
+            ├── init.vim        <-(configurações em VimScript)         
             └── lua/
-                └── config.lua    (configurações em Lua)
+                └── config.lua   <-(configurações em Lua)
 
 
 2.2. Para Vim tradicional:
    ~/
-    └── .vimrc                  (configurações em VimScript)
+    └── .vimrc                 <-(configurações em VimScript)
 
 
 3. APÓS INSTALAR:
-    3.1. Vim(```bash: vim): Executar :PlugInstall
-    3.2. Neovim(```bash: nvim): Executar :Lazy install
-    3.3. Executar o arquivo setup.sh para instalações de dependencias para o correto funcionamento das configurações do Neovim.
+    3.1. Vim(```bash: vim): Executar ':PlugInstall' no modo normal (Esc);
+    3.2. Neovim(```bash: nvim): Executar ':Lazy install' no modo normal (Esc);
+    3.3. Executar o arquivo setup.sh para instalações de dependencias para o correto funcionamento das configurações do NeoVim:
 
 ```bash:
         sudo bash -x ~/.config/nvim/setup.sh     # necessário permissão root (administrador).
@@ -104,7 +117,7 @@ sudo apt purge vim                    # Remover o pacote (ex.: sudo apt purge <n
     
 sudo apt install vim-gtk3          # Instalar versão com suporte ao clipboard
 
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
 
@@ -118,6 +131,6 @@ Clone o repositório e execute o script de instalação:
 ```bash:
 
 
-git clone https://github.com/MaviMelo/config_basic_vim_neovim ~/.config/nvim
+git clone https://github.com/MaviMelo/nvim ~/.config/nvim
 
 sudo bash -x .config/nvim/setup.sh   # necessário permissão root
