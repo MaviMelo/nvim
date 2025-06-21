@@ -13,7 +13,7 @@
 
 
 
-  Muitos usuários de terminal com filosofias de trabalho minimalista e/ou que precisam trabalhar em ambientes alheios, onde não encontram suas configurações/setup de trabalho (computadores diferentes), muitas vezes procuram um editor de texto com uma configuração mínima de personalização de trabalho. Nesse caso se não quiser instalar e carregar toda uma configuração do NeoVim, ele precisa apenas criar o arquivo ' .vimrc ', com suas configurações de trabalho no diretório home (~/). 
+  Muitos usuários de terminal com filosofias de trabalho minimalista e/ou que precisam trabalhar em ambientes alheios, onde não encontram suas configurações/setup de trabalho (computadores diferentes), muitas vezes procuram um editor de texto com uma configuração mínima de personalização de trabalho. Nesse caso se não quiser instalar e carregar toda uma configuração do NeoVim, ele precisa apenas criar o arquivo '```.vimrc```', com suas configurações de trabalho no diretório home (```~/```). 
 
   As configurações disponibilizadas aqui são testadas, básicas e customizáveis. Todavia é preciso garantir edição correta do código, observando o que é compativel e o que pode causar conflitos, principalmente no Vim que é mais antigo. 
 
@@ -27,21 +27,19 @@ Instale o Vim e/ou NeoVim (caso não já esteja) :
 	
 	sudo apt install neovim 	# Instala última versão disponível no repositório.
 ```
-Baixe este repositório , "nvim", no diretório '~/.config' . Caso ele não existir crie-o ou baixe o repositório, criando ~/.config ou direcionando para ele se já existir, da seguinte forma:
+Baixe este repositório , "nvim", no diretório '```~/.config```' . Caso ele não existir crie-o ou baixe o repositório, criando ```~/.config``` ou direcionando para ele se já existir, da seguinte forma:
 
 ```bash
 	git clone https://github.com/MaviMelo/nvim ~/.config/nvim
 ```	
 
-  Caso o Vim e/ou NeoVim já estiver(em) instalado(s), para carregar essas configurações para o Vim e/ou NeoVim que já estão carregados com outras configurações, antes de mover o diretório nvim/ (configurações para o NeoVim) para a pasta ' .config/ ' e/ou o arquivo .vimrc (configurações para o Vim) para o diretório home ( ~/ ) no sistema  operacional é preciso limpar as configurações antigas para não haver conflitos.
+  Caso o Vim e/ou NeoVim já estiver(em) instalado(s), para carregar essas configurações para o Vim e/ou NeoVim que já estão carregados com outras configurações, antes de mover o diretório ```nvim/``` (configurações para o ```NeoVim```) para a pasta ' ```.config/``` ' e/ou o arquivo ```.vimrc``` (configurações para o Vim) para o diretório home ( ```~/``` ) no sistema  operacional é preciso limpar as configurações antigas para não haver conflitos.
  
+0) Se o computador não é seu e já tem configurações para o Vim e/ou NeoVim:
 
+  0.1 Apenas use o/s editor/es, simples.
 
-  0. Se o computador não é seu e já tem configurações para o Vim e/ou NeoVim:
-
-   0.1 Apenas use o/s editor/es, simples.
-
-   0.2 Se por algum motivo você precisa usar suas configurações, faça um backup das configurações atuais: crie um diretório (pasta) de nome backupvim, por exemplo, e copie o arquivo .vimrc (caminho até o arquivo: ~/.vimrc) e/ou a pasta nvim (caminho até o diretório: ~/.config/nvim) para dentro ela.
+  0.2 Se por algum motivo você precisa usar suas configurações, faça um backup das configurações atuais: crie um diretório (pasta) de nome backupvim, por exemplo, e copie o arquivo .vimrc (caminho até o arquivo: ```~/.vimrc```) e/ou a pasta ```nvim``` (caminho até o diretório: ```~/.config/nvim```) para dentro ela.
 
 ```bash
 	mkdir  ~/backupvim			           # cria o diretório. 
@@ -56,7 +54,7 @@ Baixe este repositório , "nvim", no diretório '~/.config' . Caso ele não exis
     cp -r -p  .vimrc  ~/
     cp -r -p  nvim  ~/.config/
 ``` 
-1. Remover as configurações e dados antigos ().
+1) Remover as configurações e dados antigos ().
 
      1.1. Para o NeoVim (```bash: nvim ```)
 
@@ -94,7 +92,7 @@ Baixe este repositório , "nvim", no diretório '~/.config' . Caso ele não exis
 	brew reinstall vim 				# no macOS (via Homebrew)
 ```    
 
-2. ESTRUTURA DE ARQUIVOS (Linux/WSL/macOS):
+2) ESTRUTURA DE ARQUIVOS (Linux/WSL/macOS):
 
 2.1. Para Neovim (visão redusida e genérica):
 
@@ -114,7 +112,7 @@ Baixe este repositório , "nvim", no diretório '~/.config' . Caso ele não exis
     └── .vimrc                 #<-(configurações em VimScript)
 ```
 
-3. APÓS INSTALAR, a partir do shell (no caso o bash):
+3) APÓS INSTALAR, a partir do shell (no caso o bash):
   
   3.1. entre no Vim(```vim```): Executar '```:PlugInstall```' no modo normal (Esc) para instalar os plugins;
 
@@ -126,7 +124,7 @@ Baixe este repositório , "nvim", no diretório '~/.config' . Caso ele não exis
         sudo bash -x ~/.config/nvim/setup.sh     # necessário permissão root (administrador).
 ```
 
-4. OBSERVAÇÕES SOBRE COMPATIBILIDADE:
+4) OBSERVAÇÕES SOBRE COMPATIBILIDADE:
 
   Versões mais antigas do Vim não tem integração com clipboard (copiar e colar com o ambiente externo do editor). Verifique a versão (```vim --version```) e  procure por +clipboard ou +xterm_clipboard. Caso não tenha compatibilidade (-clipboard) é opcional usar outra versão do vim que tenha essa compatibilidade ainda que, nesse caso, faria mais sentido instalar/usar o NeoVim.
 

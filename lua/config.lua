@@ -49,7 +49,7 @@ sudo apt install luarocks && sudo apt install luacheck
 
 
 
-===>  IPORTANTE: hÁ DISPONIVEL UM SCRIPT QUE ALTOMATIZA INSTALAÇÕES DE ALGUMAS 
+===>  IPORTANTE: hÁ DISPONIVEL UM SCRIPT QUE ALTOMATIZA INSTALAÇÕES DE ALGUMAS
 DESSAS E OUTRRAS DEPENDENCIAS PARA CONFIGURAÇÃO DE DESENVOLVIMENTO WEB COM O NEOVIM.
 EXECUTE NO TERMINAL BASH COMO ADMINISTRADOR (USUÁRIO root):
                   --->  sudo bash -x ~/.config/nvim/setup.sh   <-----
@@ -381,27 +381,27 @@ require("lazy").setup({
     end,
   },
 
--- LUASNIP: MECANISMO DE SNIPPETS PARA QUALQUER LINGUAGEM
-{
-  "L3MON4D3/LuaSnip",
-  version = "v2.*", -- Fixa a versão 2, compatível com Neovim 0.9.5
-  event = "InsertEnter", -- Carrega ao entrar no modo de inserção (lazy load)
-  build = "make install_jsregexp", -- (opcional) para suporte a regex avançado
-  dependencies = { "rafamadriz/friendly-snippets" }, -- Snippets prontos (opcional)
-  config = function()
-    local luasnip = require("luasnip")
+  -- LUASNIP: MECANISMO DE SNIPPETS PARA QUALQUER LINGUAGEM
+  {
+    "L3MON4D3/LuaSnip",
+    version = "v2.*",                                  -- Fixa a versão 2, compatível com Neovim 0.9.5
+    event = "InsertEnter",                             -- Carrega ao entrar no modo de inserção (lazy load)
+    build = "make install_jsregexp",                   -- (opcional) para suporte a regex avançado
+    dependencies = { "rafamadriz/friendly-snippets" }, -- Snippets prontos (opcional)
+    config = function()
+      local luasnip = require("luasnip")
 
-    -- Configuração básica
-    luasnip.config.set_config({
-      history = true,
-      updateevents = "TextChanged,TextChangedI",
-      enable_autosnippets = true,
-    })
+      -- Configuração básica
+      luasnip.config.set_config({
+        history = true,
+        updateevents = "TextChanged,TextChangedI",
+        enable_autosnippets = true,
+      })
 
-    -- Carrega snippets no formato do VSCode (ex: do friendly-snippets)
-    require("luasnip.loaders.from_vscode").lazy_load()
-  end,
-},
+      -- Carrega snippets no formato do VSCode (ex: do friendly-snippets)
+      require("luasnip.loaders.from_vscode").lazy_load()
+    end,
+  },
 
   -- LINTER COM NVIM-LINT
   {
@@ -422,6 +422,14 @@ require("lazy").setup({
         end,
       })
     end,
+  },
+
+  --[[ PLUGINS CARREGADOS DO RIRETÓRIOS 'PLUGINS']]
+
+  {
+    --Pluguins e configurações adicionais para o Git.
+    require("plugins.git"),
+
   }
 })
 
@@ -470,7 +478,7 @@ vim.g.user_emmet_settings = {
     <!-- Define a largura da página como a largura do dispositivo e impede o zoom manual -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-  <!-- link CSS 
+  <!-- link CSS
    <link rel="stylesheet" href="css/styles.css">
   -->
 </head>
@@ -479,7 +487,7 @@ vim.g.user_emmet_settings = {
 
     <footer>
     </footer>
-    
+
     <!-- link JavaScript
      <script src="js/scripts.js" defer></script>
     -->
