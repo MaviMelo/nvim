@@ -424,7 +424,7 @@ require("lazy").setup({
     end,
   },
 
-  --[[ PLUGINS CARREGADOS DO RIRETÓRIOS 'PLUGINS']]
+  --[[ PLUGINS CARREGADOS DO RIRETÓRIOS 'PLUGINS' (./lua/plugins/)]]
 
   {
     --Pluguins e configurações adicionais para o Git.

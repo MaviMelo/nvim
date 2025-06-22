@@ -112,19 +112,19 @@ Ignorar maiúsculas/minúsculas:
 
 Resumo de Comandos Netrw:
 
-Ação			Comando
-Criar arquivo		% + nome
-Criar pasta		d + nome
-Copiar/Mover		mt → mf → mc/mm
-Busca em diretório	/ no Netrw
+Ação:                 Comando:
+Criar arquivo         % + nome
+Criar pasta           d + nome
+Copiar/Mover          mt → mf → mc/mm
+Busca em diretório    / no Netrw
 
 Resumo dos Comandos:
 
-Ação:					Comando:
+Ação:                     Comando:
 
-Substituição total			:%s/\r//g  # troca quebra de linha(\r) por nada(). Útil para 
-						   limpar as quebras de linhas ocultas de textos 
-						   do Windows
+Substituição total        :%s/\r//g  # troca quebra de linha(\r) por nada(). Útil para 
+                                     # limpar as quebras de linhas ocultas de textos 
+                                     # do Windows
 
 Substituir em seleção visual		Selecionar → :'<,'>s/palavra antiga/palavra nova/g
 Substituir em linhas com "ERROR"	:g/ERROR/s/antiga/NOVA/g

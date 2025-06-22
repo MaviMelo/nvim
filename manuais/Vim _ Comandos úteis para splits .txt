@@ -3,8 +3,8 @@ Como fechar o Vim/NeoVim coretamente:
 
 	:q  # Fecha a split (divisão de janela) atual se não houver mudanças não salvas
 	:wq  # Salva e fecha
-	:q!  # Fecha a split atual, descartando mudanças
-	:qa!  # Fecha tudo, descartando mudanças
+	:q!  # Fecha a split atual, descartando mudanças não salvas
+	:qa!  # Fecha tudo, descartando mudanças não salvas
 
 Isso evita processos suspensos. 
 
@@ -22,13 +22,13 @@ Dica (uso no terminal Linux (bash)):
 
 Comandos úteis para splits (divisões de janela):
 
-Comando			Descrição:
+Comando			    Descrição:
 
-:new 			Abre um novo buffer em uma janela horizontal
-:vnew			Abre um novo buffer em uma janela vertical
-:split 			Abre uma janela vertical
-:vsplit <file>		Abre um arquivo em uma janela vertical
-:vs <file>		Atalho para :vsplit
+:new 			      Abre um novo buffer em uma janela horizontal
+:vnew			      Abre um novo buffer em uma janela vertical
+:split 			    Abre uma janela vertical
+:vsplit <file>	Abre um arquivo em uma janela vertical
+:vs <file>		  Atalho para :vsplit
 
 Exemplos:
 
@@ -80,21 +80,21 @@ Saída do :ls (Exemplo):
 
 Legenda da saída:
 
-Símbolo		Significado
-%		Buffer atual (visível na janela ativa).
-#		Buffer alternativo (último buffer acessado, pode voltar com Ctrl + ^).
-a		Buffer "ativo" (carregado e visível em alguma janela).
-h		Buffer "oculto" (carregado, mas não exibido em nenhuma janela).
-+		Buffer com modificações não salvas.
+Símbolo:		Significado:
+%           Buffer atual (visível na janela ativa).
+#           Buffer alternativo (último buffer acessado, pode voltar com Ctrl + ^).
+a           Buffer "ativo" (carregado e visível em alguma janela).
+h           Buffer "oculto" (carregado, mas não exibido em nenhuma janela).
++           Buffer com modificações não salvas.
 
 Comandos úteis relacionados:
 
-Comando			Ação
-:b <N> ou :buffer <N>	Muda para o buffer de número N (ex: :b 2 vai para o buffer 2).
-:bdelete <N>		Remove o buffer N da memória (não fecha a janela).
-:bn / :bp		Vai para o próximo (next) ou anterior (previous) buffer.
-:sbuffer <N>		Abre o buffer N em um split horizontal.
-:vert sbuffer <N>	Abre o buffer N em um split vertical.
+Comando:		            Ação:
+:b <N> ou :buffer <N>	  Muda para o buffer de número N (ex: :b 2 vai para o buffer 2).
+:bdelete <N>		        Remove o buffer N da memória (não fecha a janela).
+:bn / :bp		            Vai para o próximo (next) ou anterior (previous) buffer.
+:sbuffer <N>		        Abre o buffer N em um split horizontal.
+:vert sbuffer <N>	      Abre o buffer N em um split vertical.
 
 Dica:
 
