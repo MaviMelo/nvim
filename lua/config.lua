@@ -430,6 +430,8 @@ require("lazy").setup({
     --Pluguins e configurações adicionais para o Git.
     require("plugins.git"),
 
+    --Mini Mapa lateral para páina.
+    require("plugins.minimapa")
   }
 })
 

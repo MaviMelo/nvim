@@ -69,7 +69,7 @@ endif
   " Outras configurações importantes
   set hidden             " Permite trocar buffers sem salvar
   set scrolloff=8        " Mantém 8 linhas de margem ao rolar
-  set colorcolumn=80    " Marca visual na enésima coluna (evita linhas longas)
+  set colorcolumn=90    " Marca visual (guia) na enésima coluna (evitar linhas longas)
   set signcolumn=yes     " Coluna lateral para sinais (erros, avisos)
   set cmdheight=2        " Altura da área de comandos (para mensagens)
   set updatetime=100     " Tempo (ms) para operações assíncronas (ex: LSP)
@@ -107,7 +107,18 @@ if !g:is_nvim " Configuração específica para Vim tradicional
   call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-fugitive' " Integração com Git
     Plug 'preservim/nerdtree' " Navegador de arquivos
+    plug 'wfxr/minimap.vim'   " Mini mapa lateral da página (:Minimapa<Tab>)
   call plug#end()
+
+    " --- Configurações Opcionais para o Minimapa (ajuste a gosto) ---
+  let g:minimap_width = 10              " Largura do minimapa (em colunas de caracteres)
+  let g:minimap_auto_start = 1          " Inicia o minimapa automaticamente 
+  let g:minimap_highlight_range = 1     " Destaca a área visível do seu código no minimapa
+  let g:minimap_enable_animation = 1    " Habilita animação suave de rolagem
+  let g:minimap_scroll_delay = 1        " Tempo de atraso para a rolagem (em milissegundos)
+  let g:minimap_auto_refresh = 1        " Refresh automático no minimapa quando o buffer muda
+  let g:minimap_refresh_interval = 200  " Intervalo de refresh (em milissegundos)
+
 
 endif
 
