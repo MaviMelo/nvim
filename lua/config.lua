@@ -273,10 +273,12 @@ require("lazy").setup({
           "html",
           "cssls",
           "lua-language-server", -- Nome atualizado para Lua
-          "pyright"
+          "pyright",
+          "intelephense",
+          "sqlls"
         },
-        -- Desativada instalação automática devido a instabilidade
-        automatic_installation = false
+        -- (Des)Ativa instalação automática (em caso de instabilidade deixe false)
+        automatic_installation = true
       })
     end
   },
@@ -327,6 +329,50 @@ require("lazy").setup({
       lspconfig.html.setup({ on_attach = on_attach, capabilities = capabilities })
       lspconfig.cssls.setup({ on_attach = on_attach, capabilities = capabilities })
 
+      --  Configuração para Intelephense (PHP LSP)
+      lspconfig.intelephense.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+        filetypes = { "php" }, -- Garante que o Intelephense seja ativado para arquivos PHP
+
+        -- Função para usar o diretório do arquivo atual como raiz (quando não há uma estrutura
+        -- de projeto identificada)
+        root_dir = function()
+          -- Retorna o diretório do arquivo atual. Se o buffer não tiver nome (arquivo não salvo),
+          -- retorna o diretório de trabalho atual.
+          return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":h") or vim.loop.cwd()
+        end,
+
+        settings = {
+          intelephense = {
+            -- Habilita autocompletar com namespace completo e importação de declarações 'use'
+            completion = {
+              fullyQualifiedTextEdit = true,
+              insertUseDeclaration = true
+            },
+            -- Você pode adicionar outras configurações específicas do Intelephense aqui
+          },
+        },
+      })
+
+      -- ADICIONADO: Configuração para SQL Language Server (sqlls)
+      lspconfig.sqlls.setup({
+        on_attach = on_attach,
+        capabilities = capabilities,
+        filetypes = { "sql" }, -- Ativa para arquivos .sql
+        root_dir = function()
+          -- Usa o diretório do arquivo atual como raiz para arquivos SQL avulsos
+          return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":h") or vim.loop.cwd()
+        end,
+        settings = {
+          sqlls = {
+            -- Configurações específicas para sqlls, se necessário
+            -- Por exemplo, para definir o dialeto SQL (mysql, postgres, sqlite, etc.)
+            dialect = "mysql", -- <-- Você pode mudar este dialeto conforme sua necessidade
+          },
+        },
+      })
+
       -- Lua (configuração especial para Neovim 0.9)
       lspconfig.lua_ls.setup({
         on_attach = on_attach,
@@ -371,13 +417,11 @@ require("lazy").setup({
   --  EMMET PARA DESENVOLVIMENTO WEB
   {
     "mattn/emmet-vim",
-    ft = { "html", "css", "javascriptreact", "typescriptreact" }, -- Só carrega nesses arquivos
+    ft = { "html", "css", "javascriptreact", "typescriptreact", "php" }, -- Só carrega nesses arquivos
     config = function()
-      noremap = true                                              -- Configuraeões específicas do Emmet
-      silent = false
-      vim.g.user_emmet_mode = "n"                                 -- Ativa no modo normal
-      vim.g.user_emmet_leader_key = ","                           -- Tecla líder para expansão
-      print("Emmet pronto para HTML/CSS!")
+      vim.g.user_emmet_mode = "n"                                        -- Ativa no modo normal
+      vim.g.user_emmet_leader_key = ","                                  -- Tecla líder para expansão
+      print("Emmet pronto para HTML/CSS/TypeScript/PHP!")
     end,
   },
 
@@ -410,11 +454,14 @@ require("lazy").setup({
     config = function()
       require("lint").linters_by_ft = {
         lua = { "luacheck" },
+        vim = { "vint" },
         javascript = { "eslint_d" },
         typescript = { "eslint_d" },
         python = { "flake8" },
         css = { "stylelint" },
-        html = { "htmlhint" }
+        html = { "htmlhint" },
+        php = { "phpcs" },
+        sql = { "sqlfluff" }
       }
       vim.api.nvim_create_autocmd("BufWritePost", {
         callback = function()
@@ -424,13 +471,13 @@ require("lazy").setup({
     end,
   },
 
-  --[[ PLUGINS CARREGADOS DO RIRETÓRIOS 'PLUGINS' (./lua/plugins/)]]
+  --[[ PLUGINS CARREGADOS DO RIRETÓRIOS 'PLUGINS']]
 
   {
     --Pluguins e configurações adicionais para o Git.
     require("plugins.git"),
 
-    --Mini Mapa lateral para páina.
+    --Mini Mapa lateral para a página.
     require("plugins.minimapa")
   }
 })
@@ -570,7 +617,8 @@ vim.keymap.set("n", "<C-l>", ":vertical resize +2<CR>", {
      VERIFICAÇÃO DE BINÁRIOS GLOBAIS DISPONÍVEIS
 --------------------------------------------------]]
 vim.schedule(function()
-  local global_binaries = { "node", "npm", "eslint_d", "prettier", "luacheck" }
+  local global_binaries = { "node", "npm", "eslint_d", "prettier", "luacheck", "intelephense", "sqlls", "sqlfluff",
+    "vint" }
   for _, bin in ipairs(global_binaries) do
     if vim.fn.executable(bin) == 1 then
       print("✅ Binário global disponível: " .. bin)

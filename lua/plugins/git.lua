@@ -1,4 +1,3 @@
-
 -- ~/.config/nvim/lua/plugins/git.lua
 
 --print("DEBUG: Arquivo git.lua está sendo carregado!")
@@ -15,11 +14,17 @@ return {
     opts = {
       -- Configurações mínimas para gitsigns
       signs = {
-        add = { text = "▎" },
-        change = { text = "▎" },
-        delete = { text = "" },
-        topdelete = { text = "" },
-        changedelete = { text = "▎" },
+        add          = { text = "󰜅", hl = "DiffAdd" }, -- Linha adicionada
+        change       = { text = "󱞱", hl = "GitSignsChange" }, -- Linha modificada
+        delete       = { text = "-", hl = "GitSignsDelete" }, -- Linha removida
+        topdelete    = { text = "󱞧", hl = "GitSignsDelete" }, -- Remoção no topo (como um "deletar para cima")
+        changedelete = { text = "≠", hl = "GitSignsChangeDelete" }, -- Modificação + exclusão
+        untracked    = { text = "?" } -- Arquivo não rastreado
+        --  add = { text = "▎" },
+        --  change = { text = "▎" },
+        --  delete = { text = "" },
+        --  topdelete = { text = "" },
+        --  changedelete = { text = "▎" },
       },
       -- Desativa a função on_attach se não for usar mapeamentos específicos aqui
       -- ou se preferir configurar mapeamentos globais em outro lugar.
