@@ -1,36 +1,71 @@
+-- codewindow
+return {
+  "gorbit99/codewindow.nvim",
+  event = "VeryLazy",
+  keys = {
+    {
+      "<leader>mm",
+      "<cmd>lua require('codewindow').toggle_minimap()<CR>",
+      desc = "Alternar Minimapa (CodeWindow)",
+      noremap = true,
+      silent = false, 
+    },
+  },
+  config = function()
+    require("codewindow").setup({
+      width = 11,
+      win_position = "right",
+      syntax_highlight = true,  -- Requer Tree-sitter para funcionar bem
+      exclude_filetypes = {
+        "help",
+        "NvimTree",
+        "lazy",
+        "mason",
+        "TelescopePrompt",
+      },
+    })
+  end,
+}
 
---[[MiniMapa lateral para a página.]]
 
 
-return{
-    "echasnovski/mini.map",
-    version = "*", -- Ou use `branch = "stable"` para versões estáveis
-    config = function()
-      require("mini.map").setup({
-        -- Todas as configurações são opcionais, aqui estão algumas sugestões:
-        integrations = {
-          mini_cursorword = nil, -- Integre com mini.cursorword para destacar a palavra sob o cursor
-          mini_indentscope = nil, -- Integre com mini.indentscope para destacar blocos de indentação
-          -- Adicione integrações com outros plugins, por exemplo:
-          -- cmp = nil, -- Se você usa nvim-cmp
-          -- lsp = nil, -- Para mostrar diagnósticos LSP no minimapa (erros, warnings)
-          -- treesitter = nil, -- Para realce de sintaxe baseado em treesitter (muito bom!)
-        },
-        -- Configurações gerais do minimapa
-        options = {
-          direction = "right", -- Posição do minimapa: "left" ou "right"
-          width = { closed = 0, opened = 10 }, -- Largura quando fechado e aberto
-          offset = 0, -- Espaçamento entre o minimapa e a janela principal
-          start_by_events = { "BufReadPost", "BufNewFile" }, -- Eventos para iniciar o minimapa
-          -- Outras opções...
-          -- show_colors = true, -- Tenta mostrar cores reais do código (pode ser lento em arquivos grandes)
-        },
-        -- Mapa de teclas (keymaps) padrão para o mini.map
-        -- Veja a documentação para mais opções de keymaps
-        mappings = {
-          -- Toggles minimap
-          ["<Leader>mm"] = "toggle",
-        },
-      })
-    end,
-  }
+
+
+
+
+
+--[[
+return {
+
+  "echasnovski/mini.map",
+  version = false,
+  event = "VeryLazy",
+  config = function()
+    local minimap = require("mini.map")
+
+    minimap.setup({
+      window = {
+        side = "right",
+        width = 15,
+        zindex = 20,
+        show_integration_count = false,
+      },
+
+      integrations = {
+        minimap.gen_integration.diagnostic(), -- Chame a função geradora
+--      minimap.gen_integration.location(), -- Chame a função geradora
+--      minimap.gen_integration.git(),  -- Chame a função geradora (se tiver gitsigns.nvim)
+      },
+
+      vim.keymap.set("n", "<leader>mm", function()
+        require("mini.map").toggle()
+      end, { desc = "Alternar Minimapa (mini.map)", noremap = true, silent = true }),
+
+      vim.keymap.set("n", "<leader>mf", function()
+        require("mini.map").toggle_focus()
+      end, { desc = "Focar no Minimapa (mini.map)", noremap = true, silent = true })
+
+    })
+  end,
+}
+]]

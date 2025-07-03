@@ -1,11 +1,12 @@
 -- ~/.config/nvim/lua/plugins/git.lua
 
---print("DEBUG: Arquivo git.lua está sendo carregado!")
+-- print("DEBUG: Arquivo git.lua está sendo carregado!")
 
 -- Retorna uma tabela de plugins para o Lazy.nvim
 
 return {
   -- Gitsigns: para indicadores de diff na barra lateral (gutter)
+ -- print("DEBUG: Arquivo git.lua está sendo carregado!"),
   {
     "lewis6991/gitsigns.nvim",
     -- Evento de carregamento, para carregar o plugin apenas quando necessário.
@@ -57,4 +58,7 @@ return {
       -- desc: Descrição que aparece se você usar um plugin como `which-key.nvim`
     },
   },
+  
 }
+
+

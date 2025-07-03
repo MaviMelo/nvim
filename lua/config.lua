@@ -1,11 +1,12 @@
 --[[
   ================================================================================
-                      CONFIGURAÇÃO PRINCIPAL DO NEOVIM COM LAZY.NVIM
+                     CONFIGURAÇÃO PRINCIPAL DO NEOVIM COM LAZY.NVIM
   ================================================================================
   Este arquivo usa o Lazy.nvim como gerenciador de plugins. Cada seção está comentada
   para explicar sua finalidade e funcionamento afim de ajudar/fcilitar a compreenção
   e customização.
   --]]
+
 
 
 --[[::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -267,12 +268,13 @@ require("lazy").setup({
     },
     config = function()
       -- Configuração simplificada para evitar problemas com automatic_installation
+      -- OBS.: O mason-lspconfig espera os nomes que o nvim-lspconfig usa, não os nomes dos pacotes do Mason.
       require("mason-lspconfig").setup({
         ensure_installed = {
-          "typescript-language-server", -- Nome correto para TypeScript
+          "tsserver",
           "html",
           "cssls",
-          "lua-language-server", -- Nome atualizado para Lua
+          "lua_ls",
           "pyright",
           "intelephense",
           "sqlls"
@@ -471,17 +473,62 @@ require("lazy").setup({
     end,
   },
 
+
+--[[NVIM TREESITTER]]
+ {
+  "nvim-treesitter/nvim-treesitter",
+  version = "0.9.2", --  para fixar a versão compativel com NeoVim 0.9.x
+  build = ":TSUpdate",  -- Atualiza parsers ao instalar
+  config = function()
+    require("nvim-treesitter.configs").setup({
+      -- Linguagens que quer suporte
+      ensure_installed = { "lua", "vim", "vimdoc", "javascript", "typescript", "html", "css", "python" },
+      highlight = { enable = true },   -- Destaque de sintaxe avançado
+      indent = { enable = true },      -- Indentação automática baseada na AST
+      incremental_selection = { enable = true }, -- Seleção por blocos lógicos
+      folding = { enable = true }  -- Dobre (fold) blocos como funções
+    })
+  end
+
+--[[
+
+Atalho:
+
+    Use zc (fechar fold), zo (abrir fold).
+
+Comandos úteis:
+
+    :TSInstall <linguagem> → Instala um parser (ex: :TSInstall python).
+
+    :TSUpdate → Atualiza todos os parsers instalados.
+
+    :TSModuleInfo → Verifica quais módulos estão ativos.
+
+--]]
+},
+
+
   --[[ PLUGINS CARREGADOS DO RIRETÓRIOS 'PLUGINS']]
 
-  {
+  { import = "plugins" }
+
+  --[[
+
+{
+ print("DEBUG: carregando pasta PLUGINS"),
     --Pluguins e configurações adicionais para o Git.
     require("plugins.git"),
 
     --Mini Mapa lateral para a página.
-    require("plugins.minimapa")
-  }
-})
+    require("plugins.minimapa"),
 
+print("DEBUG: diretório pluguins CARREGADO!")
+}
+
+]]
+
+
+})
 --[[::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::]]
 
 -- VERIFICAÇÃO DE SAÚDE DO LSP
