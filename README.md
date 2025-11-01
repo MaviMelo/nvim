@@ -620,7 +620,8 @@ backup/
   └── (vazio)
 
 Processo:
-1. Abra o Netrw: :Lexplore
+0. Abra o Netrw: :Lexplore
+1. Navegue para backup/ e marque-o com mt
 2. Navegue para src/
 3. Marque arquivo1.txt com mf
 4. Marque arquivo2.txt com mf
